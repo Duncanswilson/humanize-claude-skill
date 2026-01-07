@@ -250,6 +250,20 @@ Overall: 27% AI (was 51%)
 
 ## Troubleshooting
 
+**Dense academic prose fails even at sentence level:**
+Some formal writing is so "AI-like" that even individual sentences trigger 100% AI detection. Hedging strategies won't work. This requires **complete rewrite** in casual style:
+
+```
+❌ UNFIXABLE (each sentence 100% AI):
+"Contemporary software engineering presents practitioners with an
+unprecedented abundance of technological options."
+
+✅ COMPLETE REWRITE REQUIRED:
+"Ok so web dev has way too many options now and its actually a problem."
+```
+
+The `auto_humanize.py` script will skip all sentences and produce empty output in these cases. You must manually rewrite in casual voice.
+
 **Document over 180 words fails no matter what:**
 This is a fundamental limitation of the full model. Options:
 1. Accept that passing full model isn't achievable at this length
@@ -280,6 +294,15 @@ Then test variations of S3:
 - Complex constructions: "This is why X exist in their current form—"
 - Smooth transitions: "Furthermore," "Additionally,"
 - Parallel lists: "X, Y, and Z patterns"
+- Aphoristic statements: "More tools means less mastery" (but "Too many tools not enough time" passes)
+- Academic vocabulary: "unprecedented," "proliferation," "manifests"
+
+**Semantically similar phrases can have opposite results:**
+```
+❌ "More tools means less mastery." → 100% AI
+✅ "Too many tools not enough time." → 0% AI
+```
+The detector appears sensitive to certain phrase structures, not just meaning. When one phrasing fails, try alternatives.
 
 **The short model passes but full model fails:**
 This is expected for most technical content. The full model is much more aggressive. Options:
