@@ -17,7 +17,7 @@ import re
 import sys
 
 try:
-    from pangram import Pangram
+    from pangram import PangramText
 except ImportError:
     print("Error: pangram package not installed. Run: pip install pangram-sdk", file=sys.stderr)
     sys.exit(1)
@@ -28,7 +28,7 @@ def get_client():
     if not api_key:
         print("Error: PANGRAM_API_KEY environment variable not set", file=sys.stderr)
         sys.exit(1)
-    return Pangram(api_key=api_key)
+    return PangramText(api_key=api_key)
 
 
 def test_score(client, text):

@@ -17,9 +17,9 @@ import os
 import sys
 
 try:
-    from pangram import Pangram
+    from pangram import PangramText
 except ImportError:
-    print("Error: pangram package not installed. Run: pip install pangram", file=sys.stderr)
+    print("Error: pangram package not installed. Run: pip install pangram-sdk", file=sys.stderr)
     sys.exit(1)
 
 
@@ -41,9 +41,9 @@ def detect_ai_content(text: str) -> dict:
         }
 
     try:
-        client = Pangram(api_key=api_key)
+        client = PangramText(api_key=api_key)
 
-        # Use predict for detailed analysis
+        # Use predict for detailed analysis (v3 API)
         result = client.predict(text)
 
         # Parse the response (API returns a dict)
@@ -94,10 +94,11 @@ def detect_short(text: str) -> dict:
         }
 
     try:
-        client = Pangram(api_key=api_key)
+        client = PangramText(api_key=api_key)
         result = client.predict_short(text)
 
-        score = getattr(result, 'score', 0) or 0
+        # v3 API returns ai_likelihood field
+        score = result.get('ai_likelihood', 0) or 0
 
         return {
             "score": score,
